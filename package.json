@@ -1,6 +1,6 @@
 {
   "name": "@prathamux/planui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Render AI agent plans as scannable, interactive HTML pages via a local MCP server.",
   "license": "MIT",
   "type": "module",
@@ -21,11 +21,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prathmesh/planui.git"
+    "url": "git+https://github.com/prathameshagrawal/planui.git"
   },
-  "homepage": "https://github.com/prathmesh/planui#readme",
+  "homepage": "https://github.com/prathameshagrawal/planui#readme",
   "bugs": {
-    "url": "https://github.com/prathmesh/planui/issues"
+    "url": "https://github.com/prathameshagrawal/planui/issues"
   },
   "keywords": [
     "claude",

@@ -5,7 +5,7 @@ AI agents shove walls of markdown into chat when they present a plan. **PlanUI t
 ## Install
 
 ```bash
-npx -y planui setup
+npx -y @prathamux/planui setup
 ```
 
 That's it. The setup script:
@@ -125,7 +125,7 @@ Prints the resulting `file://` URL. Useful for testing template changes by hand.
 ## Development
 
 ```bash
-git clone https://github.com/prathmesh/planui
+git clone https://github.com/prathameshagrawal/planui
 cd planui
 npm install
 npm run build
