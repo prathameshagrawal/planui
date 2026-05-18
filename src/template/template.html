@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" data-plan-id="{{PLAN_ID}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} — PlanUI</title>
+{{PREFS_SCRIPT}}
+<style>{{STYLES}}</style>
+</head>
+<body>
+<div class="page">
+<header class="header">
+<div class="meta">
+<span class="plan-id mono">{{PLAN_ID}}</span>
+<span class="status">{{STATUS}}</span>
+<a class="raw-link" href="{{RAW_MD_NAME}}" target="_blank">View Raw ↗</a>
+<div class="settings">
+<button class="settings-btn" data-settings-toggle aria-expanded="false" aria-label="Settings">
+<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="m14.622 17.897-10.68-2.913"/>
+<path d="M18.376 2.622a1 1 0 1 1 3.002 3.002L17.36 9.643a.5.5 0 0 0 0 .707l.944.944a2.41 2.41 0 0 1 0 3.408l-.944.944a.5.5 0 0 1-.707 0L8.354 7.348a.5.5 0 0 1 0-.707l.944-.944a2.41 2.41 0 0 1 3.408 0l.944.944a.5.5 0 0 0 .707 0z"/>
+<path d="M9 8c-1.804 2.71-3.97 3.46-6.583 3.948a.507.507 0 0 0-.302.819l7.32 8.883a1 1 0 0 0 1.185.204C12.331 20.589 13 19.5 13 16"/>
+</svg>
+</button>
+<div class="settings-panel" data-settings-panel hidden>
+<div class="settings-group">
+<div class="settings-label">Theme</div>
+<div class="settings-options">
+<label class="settings-option"><input type="radio" name="theme" value="dark"><span>Dark</span></label>
+<label class="settings-option"><input type="radio" name="theme" value="midnight"><span>Midnight</span></label>
+<label class="settings-option"><input type="radio" name="theme" value="light"><span>Light</span></label>
+</div>
+</div>
+<div class="settings-group">
+<div class="settings-label">Font</div>
+<div class="settings-options">
+<label class="settings-option"><input type="radio" name="font" value="sans"><span>Sans</span></label>
+<label class="settings-option"><input type="radio" name="font" value="serif"><span>Serif</span></label>
+<label class="settings-option"><input type="radio" name="font" value="mono"><span>Mono</span></label>
+</div>
+</div>
+<div class="settings-group">
+<div class="settings-label">Primary color</div>
+<div class="settings-options settings-options-colors">
+<label class="settings-color" title="Blue"><input type="radio" name="color" value="blue"><span class="color-swatch" data-color="blue"></span></label>
+<label class="settings-color" title="Green"><input type="radio" name="color" value="green"><span class="color-swatch" data-color="green"></span></label>
+<label class="settings-color" title="Purple"><input type="radio" name="color" value="purple"><span class="color-swatch" data-color="purple"></span></label>
+<label class="settings-color" title="White"><input type="radio" name="color" value="white"><span class="color-swatch" data-color="white"></span></label>
+</div>
+</div>
+<button class="settings-save" data-settings-save>Save as default</button>
+</div>
+</div>
+</div>
+<h1 class="title">{{TITLE}}</h1>
+<div class="summary prose">{{SUMMARY}}</div>
+</header>
+<main class="main">
+{{QUESTIONS}}
+{{STEPS}}
+{{RISKS}}
+{{NOTES}}
+{{PRECONDITIONS}}
+</main>
+</div>
+<div class="action-panel">
+{{GATING_HINT}}
+<div class="action-bar">
+<button class="btn btn-primary" data-action="approve" disabled>
+<span class="btn-icon">✓</span> Approve
+</button>
+<details class="modify-details">
+<summary class="btn btn-ghost"><span class="btn-icon">↻</span> Modify</summary>
+<div class="modify-popover">
+<textarea data-modify-text rows="4" placeholder="What should change?"></textarea>
+<button class="btn btn-secondary" data-action="modify">Copy modification</button>
+</div>
+</details>
+<button class="btn btn-ghost" data-action="parallel" disabled>
+<span class="btn-icon">▶</span> <span data-parallel-label>Fork 0</span>
+</button>
+</div>
+</div>
+<div class="toast" data-toast hidden></div>
+<script>{{SCRIPT}}</script>
+</body>
+</html>

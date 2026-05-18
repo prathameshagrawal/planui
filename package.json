@@ -1,0 +1,53 @@
+{
+  "name": "@prathamux/planui",
+  "version": "0.1.0",
+  "description": "Render AI agent plans as scannable, interactive HTML pages via a local MCP server.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "planui": "dist/cli.js",
+    "planui-mcp": "dist/server.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc && cp -r src/template dist/",
+    "dev": "tsc --watch",
+    "start": "node dist/server.js",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prathmesh/planui.git"
+  },
+  "homepage": "https://github.com/prathmesh/planui#readme",
+  "bugs": {
+    "url": "https://github.com/prathmesh/planui/issues"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "mcp",
+    "model-context-protocol",
+    "plan",
+    "planui",
+    "ai-agent",
+    "html-renderer",
+    "generative-ui",
+    "claude-plugin"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "marked": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
