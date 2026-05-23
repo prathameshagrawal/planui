@@ -20,10 +20,10 @@
   font-display: swap;
 }
 @font-face {
-  font-family: "EB Garamond";
-  src: url("./fonts/EBGaramond-Variable.woff2") format("woff2-variations"),
-       url("./fonts/EBGaramond-Variable.woff2") format("woff2");
-  font-weight: 400 800;
+  font-family: "Source Serif 4";
+  src: url("./fonts/SourceSerif4-Variable.woff2") format("woff2-variations"),
+       url("./fonts/SourceSerif4-Variable.woff2") format("woff2");
+  font-weight: 200 900;
   font-style: normal;
   font-display: swap;
 }
@@ -131,7 +131,7 @@
   --font-sans: "Inter Display", -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
 }
 [data-font="serif"] {
-  --font-sans: "EB Garamond", Georgia, "Iowan Old Style", "Times New Roman", Times, serif;
+  --font-sans: "Source Serif 4", "Source Serif Pro", Charter, "Iowan Old Style", Georgia, "Times New Roman", Times, serif;
 }
 [data-font="mono"] {
   --font-sans: var(--font-mono);
@@ -1676,4 +1676,48 @@ textarea::placeholder { color: var(--text-3); }
 /* Light theme: lighten the wash so accent stays legible */
 [data-theme="light"] .block-tldr {
   background: color-mix(in srgb, var(--accent) 9%, var(--surface));
+}
+
+/* Mermaid diagram container — matches the block-* card aesthetic */
+.mermaid-wrap {
+  margin: 14px 0;
+  padding: 20px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  overflow-x: auto;
+  text-align: center;
+}
+.mermaid-wrap pre.mermaid {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre;
+  text-align: left;
+  display: inline-block;
+  min-width: 0;
+}
+.mermaid-wrap pre.mermaid[data-processed="true"] {
+  display: inline-block;
+  font-family: inherit;
+  color: inherit;
+}
+.mermaid-wrap pre.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+.mermaid-wrap.mermaid-fallback::before {
+  content: "Diagram preview unavailable (offline) — raw source below";
+  display: block;
+  margin-bottom: 10px;
+  font-size: 11px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
 }

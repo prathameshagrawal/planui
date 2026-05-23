@@ -26,7 +26,7 @@ The agent authors a structured plan and posts back a `file://` URL.
 1. You invoke `/planui <task>` in Claude Code.
 2. The slash command tells the agent to author a PlanUI-conformant markdown plan (Summary, Open Questions, Steps, Risks, etc., with catalog blocks where structure earns elevation).
 3. The agent calls the `render_plan` MCP tool with `{ title, markdown }`.
-4. PlanUI writes `~/.claude-plans/<plan_id>.md` + `.html` (self-contained — CSS, JS, and fonts inlined/sibling).
+4. PlanUI writes `~/.claude-plans/<plan_id>.md` + `.html` — CSS, JS, and fonts are inlined or sibling; the only network call is the Mermaid library from jsdelivr, and only on plans that contain a ` ```mermaid ` diagram (with a graceful "raw source" fallback when offline).
 5. You open the URL, fill in questions, toggle fork checkboxes on steps you want to fan out, then click **Approve**, **Modify**, or **Fork**.
 6. The page copies a fenced `planresponse` block to your clipboard. You paste it in chat; the agent parses the action and acts.
 
@@ -41,10 +41,11 @@ The agent authors a structured plan and posts back a `file://` URL.
   - `block:callout` — `[!info|warn|danger|success]` tinted cards
   - `block:metric` — number-on-top stat cards
   - `block:tldr` — editorial key-takeaway card
+- **Mermaid diagrams** — fence with ` ```mermaid ` and PlanUI auto-themes the diagram to the active theme/accent. `flowchart`, `sequenceDiagram`, `erDiagram`, `stateDiagram-v2`, all of Mermaid's catalog. Library is loaded from jsdelivr on demand only when a plan contains a diagram; raw source fallback if offline.
 - **Per-step Fork toggles** — check steps to queue them; the floating action bar shows `Fork N`. Pasting back the `fork` action tells the agent to spawn that many sub-agents in parallel.
 - **Open Questions** — three input shapes: free-text textarea, `- ( )` radios, `- [ ]` checkboxes. The Approve button is gated until every question has an answer.
 - **Inline chips** — `[mcp:server-name]` and `[tool:tool-name]` markers in any prose render as accent chips.
-- **Live customization** — gear icon in the header opens a dropdown: theme (dark / midnight / light), font (sans Inter Display / serif EB Garamond / mono JetBrains Mono), primary color (blue / green / purple / white). Per-plan tweaks persist in localStorage; "Save as default" writes a `prefspersist` token that the agent applies to `~/.claude-plans/preferences.json` for every future render.
+- **Live customization** — gear icon in the header opens a dropdown: theme (dark / midnight / light), font (sans Inter Display / serif Source Serif 4 / mono JetBrains Mono), primary color (blue / green / purple / white). Per-plan tweaks persist in localStorage; "Save as default" writes a `prefspersist` token that the agent applies to `~/.claude-plans/preferences.json` for every future render.
 
 ## Markdown conventions
 
@@ -89,6 +90,21 @@ Use `(depends on N)` to disable Fork for blocked steps. File paths in backticks 
 3. Browser localStorage — per-plan override
 ```
 ```
+
+### Mermaid diagrams
+
+````markdown
+## System architecture
+
+```mermaid
+flowchart LR
+  Client --> API
+  API --> Service
+  Service --> DB[(Database)]
+```
+````
+
+Pick the diagram type by intent: `flowchart` for architecture, `sequenceDiagram` for request flows, `erDiagram` for data models, `stateDiagram-v2` for lifecycles. PlanUI passes its CSS variables into Mermaid as theme overrides — diagrams re-render live when the user switches theme or accent color.
 
 ## Response grammar
 

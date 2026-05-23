@@ -44,6 +44,13 @@ interface PlanBlockToken {
   tokens: [];
 }
 
+interface MermaidBlockToken {
+  type: "mermaidBlock";
+  raw: string;
+  body: string;
+  tokens: [];
+}
+
 marked.use({
   extensions: [
     {
@@ -70,6 +77,30 @@ marked.use({
         const t = token as PlanBlockToken;
         const node = buildBlockNode(t.blockType, t.body);
         return node ? renderBlock(node) : `<pre class="block-fallback"><code>${escapeHtml(t.body)}</code></pre>`;
+      },
+    },
+    {
+      name: "mermaidBlock",
+      level: "block",
+      start(src: string) {
+        const m = src.match(/^```mermaid\b/m);
+        return m ? m.index : undefined;
+      },
+      tokenizer(src: string) {
+        const m = src.match(/^```mermaid\s*\n([\s\S]*?)```\s*(?:\n|$)/);
+        if (m) {
+          return {
+            type: "mermaidBlock",
+            raw: m[0],
+            body: m[1],
+            tokens: [],
+          };
+        }
+        return undefined;
+      },
+      renderer(token) {
+        const t = token as MermaidBlockToken;
+        return `<div class="mermaid-wrap"><pre class="mermaid">${escapeHtml(t.body.replace(/\s+$/, ""))}</pre></div>`;
       },
     },
   ],

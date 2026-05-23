@@ -83,5 +83,71 @@
 </div>
 <div class="toast" data-toast hidden></div>
 <script>{{SCRIPT}}</script>
+<script>
+(function () {
+  const nodes = document.querySelectorAll('pre.mermaid');
+  if (nodes.length === 0) return;
+  for (const n of nodes) n.setAttribute('data-source', n.textContent || '');
+
+  function isLightTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'light';
+  }
+
+  function themeVars() {
+    const cs = getComputedStyle(document.documentElement);
+    const v = (name) => cs.getPropertyValue(name).trim();
+    const accent = v('--accent') || '#5b8def';
+    const text2 = v('--text-2') || '#a4a4ab';
+    return {
+      fontFamily: 'inherit',
+      primaryColor: accent,
+      lineColor: text2,
+      activationBkgColor: accent,
+      activationBorderColor: accent,
+    };
+  }
+
+  function rerender() {
+    if (!window.mermaid) return;
+    for (const n of document.querySelectorAll('pre.mermaid')) {
+      const src = n.getAttribute('data-source');
+      if (src !== null) {
+        n.removeAttribute('data-processed');
+        n.innerHTML = '';
+        n.textContent = src;
+      }
+    }
+    window.mermaid.initialize({
+      startOnLoad: false,
+      theme: isLightTheme() ? 'default' : 'dark',
+      securityLevel: 'loose',
+      fontFamily: 'inherit',
+      themeVariables: themeVars(),
+    });
+    window.mermaid.run({ querySelector: 'pre.mermaid' }).catch(function (err) { console.error('mermaid render failed', err); });
+  }
+
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/mermaid@11.15.0/dist/mermaid.min.js';
+  s.onload = function () { rerender(); };
+  s.onerror = function () {
+    for (const n of document.querySelectorAll('pre.mermaid')) {
+      const wrap = n.closest('.mermaid-wrap');
+      if (wrap) wrap.classList.add('mermaid-fallback');
+    }
+  };
+  document.head.appendChild(s);
+
+  const obs = new MutationObserver(function (records) {
+    for (const r of records) {
+      if (r.type === 'attributes' && (r.attributeName === 'data-theme' || r.attributeName === 'data-color')) {
+        rerender();
+        return;
+      }
+    }
+  });
+  obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-color'] });
+})();
+</script>
 </body>
 </html>

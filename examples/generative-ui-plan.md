@@ -39,7 +39,7 @@ PlanUI currently handles schema-level structure (Summary, Open Questions, Steps,
 
 These either stay as plain markdown or are out of scope for v1:
 
-- **Charts / graphs** — agents can embed a Mermaid fenced block; we render it as a code block. Optional Mermaid support is a future add.
+- **Charts / graphs** — agents embed a Mermaid fenced block; PlanUI auto-themes it to match the active theme/accent. Shipped in 0.2.0.
 - **Image embeds** — out of scope for v1. Could add `<img>` rendering for `![alt](path)` later.
 - **Custom decision matrices** — use a markdown table.
 - **Inline React / Vue components** — no client-side framework. The output stays a single self-contained HTML file.

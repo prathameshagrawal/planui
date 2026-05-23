@@ -1,6 +1,6 @@
 {
   "name": "@prathamux/planui",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Render AI agent plans as scannable, interactive HTML pages via a local MCP server.",
   "license": "MIT",
   "type": "module",
@@ -14,7 +14,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc && cp -r src/template dist/",
+    "build": "rm -rf dist && tsc && cp -r src/template dist/",
     "dev": "tsc --watch",
     "start": "node dist/server.js",
     "prepublishOnly": "npm run build"
@@ -37,7 +37,8 @@
     "ai-agent",
     "html-renderer",
     "generative-ui",
-    "claude-plugin"
+    "claude-plugin",
+    "mermaid"
   ],
   "engines": {
     "node": ">=20.11"

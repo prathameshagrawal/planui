@@ -26,6 +26,17 @@ When you call `/planui <description>`, your Claude agent writes a structured mar
 4. You open the URL, interact, copy an action, paste back
 ```
 
+For architecture or flow plans, the agent can embed a Mermaid diagram and PlanUI auto-themes it:
+
+```mermaid
+flowchart LR
+  You([You]) -->|/planui task| Agent[Claude Agent]
+  Agent -->|render_plan| MCP[PlanUI MCP]
+  MCP --> HTML[(plan.html)]
+  HTML -->|open + interact| You
+  You -->|paste planresponse| Agent
+```
+
 ## The action bar
 
 At the bottom of every plan:
