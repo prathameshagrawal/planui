@@ -16,10 +16,8 @@ Usage:
 
 After running setup, restart Claude Code and use /planui <task> in any chat.
 
-Tip: always invoke via "npx -y @prathamux/planui@latest <command>" to
-guarantee npx pulls the newest published version. Do NOT run from inside
-a directory whose package.json name is @prathamux/planui — npx will try
-local resolution instead of the registry and fail with "command not found".`);
+Tip: invoke via "npx -y @prathamux/planui@latest <command>" so npx
+always pulls the newest published version instead of a cached one.`);
 }
 
 async function runRender(args: string[]): Promise<void> {

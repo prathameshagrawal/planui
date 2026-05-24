@@ -1,6 +1,6 @@
 {
   "name": "@prathamux/planui",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Render AI agent plans as scannable, interactive HTML pages via a local MCP server.",
   "license": "MIT",
   "type": "module",
