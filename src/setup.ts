@@ -232,6 +232,49 @@ async function renderAndOpenWelcome(): Promise<void> {
   openInBrowser(result.url);
 }
 
+async function clearNpxCache(): Promise<number> {
+  const npxDir = path.join(HOME, ".npm", "_npx");
+  let cleared = 0;
+  let entries: string[];
+  try {
+    entries = await fs.readdir(npxDir);
+  } catch {
+    return 0;
+  }
+  for (const entry of entries) {
+    const pkgJsonPath = path.join(npxDir, entry, "node_modules", "@prathamux", "planui", "package.json");
+    try {
+      await fs.access(pkgJsonPath);
+    } catch {
+      continue;
+    }
+    try {
+      await fs.rm(path.join(npxDir, entry), { recursive: true, force: true });
+      cleared++;
+    } catch {
+      // best-effort
+    }
+  }
+  return cleared;
+}
+
+async function unregisterMcpServer(): Promise<boolean> {
+  const cfg = await readJsonOrNull(CLAUDE_JSON);
+  if (!cfg?.mcpServers?.planui) return false;
+  delete cfg.mcpServers.planui;
+  await writeJsonAtomic(CLAUDE_JSON, cfg);
+  return true;
+}
+
+async function removeSlashCommand(): Promise<boolean> {
+  try {
+    await fs.unlink(COMMAND_FILE);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function runSetup(): Promise<void> {
   await checkEnvironment();
   await registerMcpServer();
@@ -239,4 +282,62 @@ export async function runSetup(): Promise<void> {
   await renderAndOpenWelcome();
   console.log("");
   console.log("Done. Restart Claude Code, then type /planui <task> in any chat.");
+}
+
+export async function runUpgrade(): Promise<void> {
+  console.log("Upgrading PlanUI...");
+  console.log(`  ✓ Running v${await getOwnVersion()}`);
+
+  // Re-run setup steps — registerMcpServer and installSlashCommand are
+  // already idempotent, so this picks up any command/format changes
+  // between versions without duplicating work.
+  await registerMcpServer();
+  await installSlashCommand();
+
+  // Bust the npx cache so the next MCP cold-start re-downloads from the
+  // registry instead of running a stale cached binary.
+  const cleared = await clearNpxCache();
+  if (cleared > 0) {
+    console.log(`  ✓ Cleared ${cleared} stale npx cache entr${cleared === 1 ? "y" : "ies"}`);
+  } else {
+    console.log(`  • No npx cache entries to clear`);
+  }
+
+  console.log("");
+  console.log("Done. Restart Claude Code to load the new MCP server.");
+}
+
+export async function runUninstall(): Promise<void> {
+  console.log("Uninstalling PlanUI...");
+
+  const removedMcp = await unregisterMcpServer();
+  console.log(removedMcp
+    ? `  ✓ MCP server "planui" removed from ~/.claude.json`
+    : `  • MCP server entry not found (already removed)`);
+
+  const removedCmd = await removeSlashCommand();
+  console.log(removedCmd
+    ? `  ✓ Slash command removed from ~/.claude/commands/planui.md`
+    : `  • Slash command file not found`);
+
+  const cleared = await clearNpxCache();
+  if (cleared > 0) {
+    console.log(`  ✓ Cleared ${cleared} npx cache entr${cleared === 1 ? "y" : "ies"}`);
+  }
+
+  console.log("");
+  console.log("Done. Your rendered plans at ~/.claude-plans/ were left in place.");
+  console.log("To remove them too:  rm -rf ~/.claude-plans");
+}
+
+async function getOwnVersion(): Promise<string> {
+  try {
+    // dist/setup.js → ../package.json
+    const pkgPath = path.join(import.meta.dirname, "..", "package.json");
+    const raw = await fs.readFile(pkgPath, "utf8");
+    const pkg = JSON.parse(raw) as { version?: string };
+    return pkg.version ?? "unknown";
+  } catch {
+    return "unknown";
+  }
 }

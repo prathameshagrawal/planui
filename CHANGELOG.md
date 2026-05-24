@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] — 2026-05-23
+
+### Added
+- **`planui upgrade` command** — pulls the newest published version, re-runs idempotent setup, and clears the npx cache so Claude Code's MCP cold-start picks up the new binary on next restart. Run as `npx -y @prathamux/planui@latest upgrade`.
+- **`planui uninstall` command** — removes the `planui` MCP entry from `~/.claude.json`, deletes `~/.claude/commands/planui.md`, and clears the npx cache. Leaves `~/.claude-plans/` (your rendered plans) untouched; full nuke is a manual `rm -rf`.
+- **CLI `--help` text expanded** to document all three lifecycle commands, the importance of the `@latest` suffix, and the cwd footgun (running `npx @prathamux/planui …` from inside the planui source repo triggers npx's local-package resolution and fails with `command not found`).
+
+### Changed
+- README "Install" section restructured to cover install + upgrade + uninstall as a single three-command block, with the cwd gotcha called out.
+
 ## [0.2.0] — 2026-05-23
 
 ### Added

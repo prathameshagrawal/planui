@@ -2,13 +2,24 @@
 
 AI agents shove walls of markdown into chat when they present a plan. **PlanUI turns that into a scannable HTML page** with inline answer fields, fork toggles, and a one-click action bar. No daemon, no server — just a markdown file, an HTML file, and the clipboard.
 
-## Install
+## Install / Upgrade / Uninstall
 
 ```bash
-npx -y @prathamux/planui setup
+# Fresh install (or run anytime to re-bootstrap)
+npx -y @prathamux/planui@latest setup
+
+# Upgrade an existing install to the newest published version
+npx -y @prathamux/planui@latest upgrade
+
+# Remove the MCP entry + slash command (rendered plans are left alone)
+npx -y @prathamux/planui@latest uninstall
 ```
 
-That's it. The setup script:
+The `@latest` suffix is important — without it, npx will reuse the cached older version forever. The `upgrade` command also clears the npx cache so Claude Code's MCP server picks up the new binary on next restart.
+
+> **Gotcha:** don't run any of these from inside a directory whose `package.json` is named `@prathamux/planui` (i.e. the planui source repo). npx will try local resolution and fail with `sh: planui: command not found`. Run from `~`, `/tmp`, or any other dir.
+
+`setup` does three things:
 - Registers a `planui` MCP server in your Claude Code config (user-scoped)
 - Drops a `/planui` slash command at `~/.claude/commands/planui.md`
 - Renders + opens a Welcome plan in your browser
