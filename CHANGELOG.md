@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] — 2026-05-23
+
+### Fixed
+- **Open Questions radio/checkbox parser** — relaxed the option-line regex from `\s{2,}-` (requiring indented sub-bullets) to `\s*-` (accepting top-level sibling bullets). Agents reliably emit radios as sibling bullets, not nested ones, so the strict regex was treating each `- ( )` option as its own question with a textarea. The fix accepts both indented and sibling layouts.
+- **Slash command brief** — clarified the Open Questions format with an explicit example showing sibling bullets, so agents stop having to guess.
+
 ## [0.3.1] — 2026-05-23
 
 ### Changed

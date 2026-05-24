@@ -157,8 +157,11 @@ export function parseQuestions(text: string): Question[] {
   for (const rawLine of lines) {
     if (!rawLine.trim()) continue;
     const qMatch = rawLine.match(/^\s*(?:\d+\.|[-*+])\s+(.+)$/);
-    const cbMatch = rawLine.match(/^\s{2,}-\s+\[[ xX]\]\s+(.+)$/);
-    const rbMatch = rawLine.match(/^\s{2,}-\s+\([ xX]\)\s+(.+)$/);
+    // Accept both indented sub-bullets and top-level sibling bullets.
+    // Agents reliably emit top-level `- ( )` siblings; insisting on \s{2,}
+    // would mis-parse those as separate questions.
+    const cbMatch = rawLine.match(/^\s*-\s+\[[ xX]\]\s+(.+)$/);
+    const rbMatch = rawLine.match(/^\s*-\s+\([ xX]\)\s+(.+)$/);
     if (cbMatch && current) {
       current.kind = "checkbox";
       current.options.push(cbMatch[1].trim());

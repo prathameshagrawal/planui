@@ -12,10 +12,23 @@ Author a PlanUI-conformant markdown plan, then render it.
 **Plan structure** — use these H2 sections, skip any that don't apply. Better to omit than pad:
 
 - `## Summary` — 1-3 sentences, lead with the goal.
-- `## Open Questions` — only when you genuinely don't know. Not for performative confirmation. Mix shapes by answer type:
-  - Free-text for open prompts
-  - `- [ ]` checkboxes for multi-select
-  - `- ( )` radios for single-select
+- `## Open Questions` — only when you genuinely don't know. Not for performative confirmation. Each question is a top-level bullet. For multiple-choice questions, follow the question bullet with **sibling** bullets carrying `( )` (radio) or `[ ]` (checkbox) markers — do not indent them as sub-bullets. Free-text answers are just a question bullet with no marker siblings after it.
+
+  Example:
+
+  ```
+  - Which storage backend should we use?
+  - ( ) Redis
+  - ( ) Postgres
+  - ( ) In-memory
+
+  - Which themes ship in v1?
+  - [ ] dark
+  - [ ] midnight
+  - [ ] light
+
+  - What's the rollout window?
+  ```
 - `## Preconditions` — what must be true before the plan can start. Skip if there are none.
 - `## Steps` — numbered list, `**Title** — description` format. Annotate deps with `(depends on N)`. Reference files in backticks.
 - `## Risks` — only if a real failure mode exists. Prefix `[high]` / `[med]` / `[low]` for severity badges. Skip the section if every item would be a stretch.
